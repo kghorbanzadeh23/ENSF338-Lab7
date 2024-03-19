@@ -5,61 +5,49 @@ import matplotlib.pyplot as plt
 
 
 class Node:
-    def __init__(self, data, parent=None, left=None, right=None):
-        self.parent = parent
-        self.data = data
-        self.left = left
-        self.right = right
-        self.height = 1
-        self.balance = 0
+    def __init__(self, key):
+        self.key = key
+        self.left = None
+        self.right = None
 
-    
 class BinarySearchTree:
-    def insert(self, data, root=None):
-        current = root
-        parent = None
+    def __init__(self):
+        self.root = None
 
-        while current is not None:
-            parent = current
-            if data <= current.data:
-                current.balance = current.balance - 1
-                current = current.left
-                
-            else:
-                current.balance += 1
-                current = current.right
+    def insert(self, key):
+        self.root = self._insert(self.root, key)
 
-
-        newNode = Node(data, parent)
+    def _insert(self, root, key):
         if root is None:
-            root = newNode
-            return newNode
-        elif data <= parent.data:
-            parent.left = newNode
-        else:
-            parent.right = newNode
+            return Node(key)
+        if key < root.key:
+            root.left = self._insert(root.left, key)
+        elif key > root.key:
+            root.right = self._insert(root.right, key)
+        return root
 
-        balenceFactor = self.getBalance(root)
-    
-    def getBalance(self, root):
-        return root.balance
+    def search(self, key):
+        return self._search(self.root, key)
 
-    def search(self, data, root):
-        current = root
-        while current is not None:
-            if data == current.data:
-                return current
-            elif data <= current.data:
-                current = current.left
-            else:
-                current = current.right
-        return current
-    
-    def getHeight(self, root):
-        if not root:
+    def _search(self, root, key):
+        if root is None or root.key == key:
+            return root
+        if key < root.key:
+            return self._search(root.left, key)
+        return self._search(root.right, key)
+
+    def balance(self):
+        return self._balance(self.root)
+
+    def _balance(self, node):
+        if node is None:
             return 0
-        return root.height
+        return abs(self._height(node.left) - self._height(node.right))
 
+    def _height(self, node):
+        if node is None:
+            return 0
+        return 1 + max(self._height(node.left), self._height(node.right))
 
 
 # Build binary search tree
@@ -70,28 +58,26 @@ for data in range(0,1000):
 
 for i in range(1000):
     random.shuffle(numbers)
-rand = random.randint(0,999)
-root = Node(rand)
-numbers.remove(rand)
+
 for i in numbers:
-    tree.insert(i,root)
+    tree.insert(i)
 
 
 task = []
 for i in range(0,1000):
-    ranInt = random.randint(0,999)
-    task.append(ranInt)
+    task.append(i)
+    random.shuffle(task)
 times = []
 balanceValues = []
 
 for i in task:
-    times.append(timeit.timeit(lambda: tree.search(i,root),number=1))
-    node = tree.search(i,root)
-    balance = tree.getBalance(node)
+    times.append(timeit.timeit(lambda: tree.search(i),number=1))
+    node = tree.search(i)
+    balance = tree._balance(node)
     balanceValues.append(balance)
     
 max = max(balanceValues)
-
+print(max)
 
 # Plotting the distribution of times
 plt.scatter(balanceValues, times)
