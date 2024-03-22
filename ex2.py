@@ -29,16 +29,16 @@ class AVLTree:
         # Check for balance factor and rotate if necessary
         if root.balance > 1:
             if key < root.left.key:
-                return self._rotate_right(root)
+                print("case 3 not supported")
             else:
-                root.left = self._rotate_left(root.left)
-                return self._rotate_right(root)
+                print("case 3 not supported")
+
         elif root.balance < -1:
             if key > root.right.key:
-                return self._rotate_left(root)
+                print("case 3 not supported")
             else:
-                root.right = self._rotate_right(root.right)
-                return self._rotate_left(root)
+                print("case 3 not supported")
+
 
         return root
 
@@ -103,8 +103,8 @@ if __name__ == "__main__":
     tree = AVLTree()
 
     # Test Case 1: Adding a node resulting in case 1
-    tree.insert(30)
     tree.insert(20)
+    tree.insert(30)
     tree.insert(10)
     print("Test Case 1:")
     tree.print_tree()
@@ -118,7 +118,7 @@ if __name__ == "__main__":
 
     # Test Case 3: Adding a node resulting in case 3 (Not supported in this implementation)
     print("Test Case 3 (Not supported):")
-    tree.insert(5)
+    tree.insert(16)
     tree.print_tree()
     print()
 

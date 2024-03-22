@@ -28,17 +28,16 @@ class AVLTree:
         if root.balance > 1:
             if key < root.left.key:
                 root = self._rotate_right(root)
-            else:
                 print("Case #3a: adding a node to an outside subtree")
-                root.left = self._rotate_left(root.left)
-                root = self._rotate_right(root)
+            else:
+                print("Case #3b: not supported")
+
         elif root.balance < -1:
             if key > root.right.key:
                 root = self._rotate_left(root)
-            else:
                 print("Case #3a: adding a node to an outside subtree")
-                root.right = self._rotate_right(root.right)
-                root = self._rotate_left(root)
+            else:
+                print("Case #3b: not supported")
 
         return root
 
@@ -102,7 +101,7 @@ if __name__ == "__main__":
     tree.print_tree()
     print("\n")
 
-    print("Test Case 3a: Adding a node resulting in case 3a (Left-Right Rotation)")
+    print("Test Case 3a: Adding a node resulting in case 3a")
     tree.insert(45)
     print("Test Case 3a:")
     tree.print_tree()
